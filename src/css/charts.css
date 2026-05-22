@@ -1,0 +1,163 @@
+/* =============================================================================
+   CHARTS · Panels, legends, tooltips
+   ============================================================================= */
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.chart-panel {
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  position: relative;
+  min-height: 320px;
+}
+
+.chart-panel h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+/* ---------- Legend ---------- */
+.chart-panel .legend {
+  display: flex;
+  gap: 24px;
+  font-size: 17px;
+  color: var(--gray-700);
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  line-height: 1.6;
+}
+
+.chart-panel .legend .sw {
+  display: inline-block;
+  width: 14px;
+  height: 3px;
+  vertical-align: middle;
+  margin-right: 4px;
+  border-radius: 2px;
+}
+
+.chart-panel .legend .dash {
+  border-top: 2px dashed;
+  background: none;
+  height: 0;
+  width: 14px;
+}
+
+/* ---------- Empty state ---------- */
+.chart-empty {
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 1.6;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Tooltip ---------- */
+.chart-tooltip {
+  position: absolute;
+  display: none;
+  background: rgba(30, 41, 59, 0.95);
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 4px;
+  font-size: 15px;
+  line-height: 1.7;
+  pointer-events: none;
+  z-index: 5;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transform: translate(-50%, -100%);
+  margin-top: -10px;
+}
+
+.chart-tooltip b { color: #fbbf24; }
+
+/* ---------- Interactive markers ---------- */
+.chart-panel svg circle[data-info],
+.chart-panel svg rect[data-info] {
+  cursor: pointer;
+}
+
+.chart-panel svg circle.hit {
+  fill: transparent;
+  stroke: none;
+}
+
+/* ---------- Overall KPIs (optional top summary strip) ---------- */
+.overall-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.overall-kpi {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  background: var(--surface);
+}
+
+.overall-kpi .v {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--green-900);
+}
+
+.overall-kpi .l {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  letter-spacing: 0.8px;
+  margin-top: 2px;
+}
+
+.overall-kpi.warn   .v { color: var(--orange-500); }
+.overall-kpi.danger .v { color: var(--red-600); }
+
+/* ---------- Report table (used in any tabular preview block) ---------- */
+table.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+table.report-table th {
+  background: var(--green-700);
+  color: #fff;
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 10px;
+}
+
+table.report-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+table.report-table tr.main-row { background: var(--green-50); }
+table.report-table tr:hover td { background: var(--surface-2); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .charts-grid      { grid-template-columns: 1fr; }
+  .overall-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}

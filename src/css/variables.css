@@ -1,0 +1,93 @@
+/* =============================================================================
+   CSS VARIABLES · Design Tokens
+   ---------------------------------------------------------------------------
+   Central source of truth for colors, spacing, shadows, and radii.
+   Change values here to re-theme the entire dashboard without touching markup.
+   ============================================================================= */
+
+:root {
+  /* Brand greens (SchneiTec) */
+  --green-900: #1B5E20;
+  --green-700: #2E7D32;
+  --green-500: #4CAF50;
+  --green-300: #A5D6A7;
+  --green-50:  #E8F5E9;
+
+  /* Blue accents (SNTL600) */
+  --blue-700: #1976D2;
+  --blue-500: #2196F3;
+  --blue-50:  #E3F2FD;
+
+  /* Status amber */
+  --amber-500:  #FB8C00;
+  --orange-500: #FFA726;
+
+  /* Danger red */
+  --red-600: #E53935;
+  --red-50:  #FFEBEE;
+
+  /* Grayscale ramp */
+  --gray-900: #212121;
+  --gray-700: #424242;
+  --gray-500: #757575;
+  --gray-300: #BDBDBD;
+  --gray-200: #E0E0E0;
+  --gray-100: #F5F5F5;
+  --gray-50:  #FAFAFA;
+  --white:    #FFFFFF;
+
+  /* Shadows */
+  --shadow:    0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg: 0 4px 6px rgba(0,0,0,.07), 0 10px 20px rgba(0,0,0,.05);
+
+  /* Radii */
+  --radius:    10px;
+  --radius-sm: 6px;
+
+  /* Plant-specific accent colors
+     (also mirrored in src/js/config.js — keep in sync)                       */
+  --sntl600-color: #1976D2;
+  --sntl400-color: #2E7D32;
+
+  /* Typography scale */
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
+                 "Noto Sans", Roboto, sans-serif;
+  --font-size-xs:   10px;
+  --font-size-sm:   12px;
+  --font-size-base: 14px;
+  --font-size-md:   16px;
+  --font-size-lg:   18px;
+  --font-size-xl:   22px;
+
+  /* App scale and smooth transitions */
+  --app-scale: 1;
+  --transition-speed: 220ms;
+  --bg: var(--gray-100);
+  --surface: var(--white);
+  --surface-2: var(--gray-100);
+  --surface-3: var(--gray-200);
+  --text-primary: var(--gray-900);
+  --text-secondary: var(--gray-700);
+  --border: var(--gray-200);
+}
+
+html.theme-dark,
+html[data-theme="dark"] {
+  --bg: #121318;
+  --surface: #1D222B;
+  --surface-2: #232A36;
+  --surface-3: #2E3745;
+  --white: #F5F7FA;
+  --gray-50: #191F28;
+  --gray-100: #1F262F;
+  --gray-200: #2C3645;
+  --gray-300: #3C4A62;
+  --gray-500: #A4B0C2;
+  --gray-700: #CBD1E0;
+  --gray-900: #F5F7FA;
+  --green-50: #0F2915;
+  --blue-50: #0F2740;
+  --amber-500: #F59E0B;
+  --red-50: #381212;
+  --border: #3C4A62;
+}

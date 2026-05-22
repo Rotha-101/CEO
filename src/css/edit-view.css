@@ -1,0 +1,336 @@
+/* =============================================================================
+   EDIT VIEW · Summary, alerts, plant rows, spare parts
+   ============================================================================= */
+
+/* ---------- Overview (Summary + Alerts) ---------- */
+.overview-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+  align-items: stretch;
+}
+
+.overview-row .field {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.overview-row .field > textarea {
+  flex: 1 1 auto;
+  min-height: 80px;
+}
+
+.overview-row .field .alerts-list {
+  flex: 1 1 auto;
+  min-height: 60px;
+  overflow-y: auto;
+}
+
+.field label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--gray-500);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.field textarea,
+.field input,
+.field select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  background: var(--surface-2);
+  color: var(--text-primary);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* ---------- Alerts list ---------- */
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.alert-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.alert-row input { flex: 1; }
+
+/* ---------- Drop zone for Discord HTML ---------- */
+.overview-row .field.drop-hover {
+  outline: 2px dashed var(--green-500);
+  outline-offset: -4px;
+  background: var(--green-50);
+}
+
+.drop-hint {
+  font-size: 10px;
+  color: var(--gray-500);
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* ---------- Main Plants List ---------- */
+.main-plants-list {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.main-row-wrap {
+  border-bottom: 1px solid var(--border);
+}
+
+.main-row-wrap:last-child {
+  border-bottom: none;
+}
+
+.main-row {
+  display: grid;
+  grid-template-columns: 170px 120px minmax(110px, 1fr) minmax(110px, 1fr) minmax(130px, 1fr) minmax(110px, 1fr) minmax(110px, 1fr) minmax(110px, 1fr) 34px;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 12px;
+}
+
+.main-row.header {
+  background: var(--surface-2);
+  font-size: 10px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 6px 12px;
+}
+
+.main-row.header span { padding: 0; }
+
+.main-row .plant-info {
+  line-height: 1.15;
+}
+
+.main-row .plant-info .name {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--green-900);
+}
+
+.main-row .plant-info .meta {
+  font-size: 10px;
+  color: var(--gray-500);
+  margin-top: 1px;
+}
+
+.main-row select,
+.main-row input {
+  padding: 5px 7px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 12px;
+  width: 100%;
+  background: var(--surface-2);
+  color: var(--text-primary);
+}
+
+.main-row select.status-Healthy   { background: var(--green-50);  color: var(--green-700); border-color: var(--green-300); }
+.main-row select.status-Warning   { background: #FFF3E0;          color: #E65100;          border-color: #FFCC80; }
+.main-row select.status-HighAlert { background: var(--red-50);    color: #B71C1C;          border-color: #EF9A9A; }
+
+.main-row .row-edit {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--gray-500);
+  padding: 4px;
+}
+
+.main-row .row-edit:hover { color: var(--gray-900); }
+
+/* ---------- Readout row (ESA / Margin / RTE) ---------- */
+.main-readout-row {
+  padding: 5px 12px;
+  background: var(--surface-2);
+  font-size: 11px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border);
+  align-items: center;
+}
+
+.main-readout-row .rl-label {
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.main-readout-row .rl-val {
+  font-weight: 700;
+  color: var(--gray-900);
+  font-size: 12px;
+}
+
+.margin-pos { color: var(--green-700) !important; }
+.margin-neg { color: #B71C1C !important; font-weight: 800; }
+
+.main-readout-row.margin-alert {
+  background: var(--red-50);
+  border-top-color: #EF9A9A;
+}
+
+.main-readout-row.margin-alert .rl-val.margin-neg {
+  color: #B71C1C !important;
+}
+
+/* ---------- Sub Plants List ---------- */
+.sub-plants-list {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.sub-row {
+  display: grid;
+  grid-template-columns: 90px 70px 130px 1fr 1fr 34px;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sub-row:last-child { border-bottom: none; }
+
+.sub-row.header {
+  background: var(--surface-2);
+  font-size: 10px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sub-row.header span { padding: 0; }
+
+.sub-row .plant-name {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--gray-900);
+}
+
+.sub-row .plant-cap {
+  font-size: 11px;
+  color: var(--gray-500);
+}
+
+.sub-row select,
+.sub-row input {
+  padding: 5px 7px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 12px;
+  width: 100%;
+  background: var(--surface-2);
+  color: var(--text-primary);
+}
+
+.sub-row select.status-Healthy   { background: var(--green-50);  color: var(--green-700); border-color: var(--green-300); }
+.sub-row select.status-Warning   { background: #FFF3E0;          color: #E65100;          border-color: #FFCC80; }
+.sub-row select.status-HighAlert { background: var(--red-50);    color: #B71C1C;          border-color: #EF9A9A; }
+
+.sub-row .row-edit {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--gray-500);
+  padding: 4px;
+}
+
+.sub-row .row-edit:hover { color: var(--gray-900); }
+
+/* ---------- Add Site Button ---------- */
+.site-add-btn {
+  border: 2px dashed var(--gray-300);
+  border-radius: var(--radius);
+  padding: 20px;
+  color: var(--gray-500);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  width: 100%;
+}
+
+.site-add-btn:hover {
+  border-color: var(--green-500);
+  color: var(--green-700);
+  background: var(--green-50);
+}
+
+/* ---------- Spare Parts Input ---------- */
+.spare-parts-edit { padding: 0; }
+
+.sp-input-row {
+  display: grid;
+  grid-template-columns: 150px 1fr 140px 100px 40px;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.sp-input-row input {
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  background: var(--surface-2);
+  color: var(--text-primary);
+  width: 100%;
+}
+
+.sp-input-row .qty-input { text-align: center; }
+
+/* ---------- Legacy site-card (kept for modal cards) ---------- */
+.site-card { padding: 0; overflow: hidden; }
+
+.site-card-header {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-2);
+}
+
+.site-card-header.main {
+  background: var(--green-50);
+  border-bottom-color: var(--green-300);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .overview-row { grid-template-columns: 1fr; }
+}

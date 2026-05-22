@@ -1,0 +1,87 @@
+/* =============================================================================
+   BASE · Reset + Typography
+   ============================================================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: 1rem;
+  color: var(--text-primary);
+  background: var(--bg);
+  line-height: 1.5;
+  min-height: 100vh;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+.app-root {
+  transform-origin: top center;
+  transition: transform var(--transition-speed) ease, background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+  zoom: var(--app-scale, 1);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Section titles used in both edit and preview modes */
+.section { margin-bottom: 20px; }
+
+.section-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gray-500);
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title::before {
+  content: "";
+  width: 4px;
+  height: 14px;
+  background: var(--green-700);
+  border-radius: 2px;
+}
+
+.section-sub {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--gray-200);
+}
+
+.section-sub h3 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}

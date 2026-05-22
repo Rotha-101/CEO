@@ -1,0 +1,23 @@
+{
+  "name": "ceo-daily-report",
+  "version": "1.0.0",
+  "description": "SchneiTec CEO Daily Report Dashboard - A modular, customizable ESS O&M dashboard",
+  "main": "index.html",
+  "scripts": {
+    "dev": "serve -l 8000",
+    "build": "node build.js",
+    "start": "npm run build && serve -l 8000 public"
+  },
+  "keywords": [
+    "dashboard",
+    "energy",
+    "report",
+    "ESS",
+    "O&M"
+  ],
+  "author": "SchneiTec",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}

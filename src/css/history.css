@@ -1,0 +1,102 @@
+/* =============================================================================
+   HISTORY PANEL · Slide-in drawer
+   ============================================================================= */
+
+.history-panel {
+  position: fixed;
+  top: 0;
+  right: -440px;
+  width: 420px;
+  height: 100vh;
+  background: var(--surface);
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.25);
+  transition: right 0.25s;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+}
+
+.history-panel.open {
+  right: 0;
+}
+
+.history-panel header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.history-panel header h2 {
+  font-size: 15px;
+  flex: 1;
+}
+
+.history-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.history-item {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-2);
+}
+
+.history-item:hover {
+  border-color: var(--green-500);
+  background: var(--surface-3);
+}
+
+.history-item .date {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--gray-900);
+}
+
+.history-item .meta {
+  font-size: 11px;
+  color: var(--gray-500);
+  margin-top: 2px;
+}
+
+.history-item .actions {
+  display: flex;
+  gap: 4px;
+}
+
+/* ---------- Redline readout (shared between edit card + preview) ---------- */
+.redline-readout {
+  font-size: 12px;
+  padding: 8px 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.redline-readout .rl-label {
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.redline-readout .rl-val {
+  font-weight: 700;
+  color: var(--gray-900);
+}

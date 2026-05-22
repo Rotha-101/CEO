@@ -1,0 +1,193 @@
+/* =============================================================================
+   COMPONENTS · Buttons, cards, modals, pills
+   ============================================================================= */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-primary);
+  transition: all 0.15s;
+}
+
+.btn:hover {
+  background: var(--surface-3);
+  border-color: var(--text-secondary);
+}
+
+.btn-primary {
+  background: var(--green-700);
+  color: var(--white);
+  border-color: var(--green-700);
+}
+
+.btn-primary:hover {
+  background: var(--green-900);
+  border-color: var(--green-900);
+}
+
+.btn-secondary {
+  background: var(--surface-2);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--surface-3);
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--gray-700);
+}
+
+.btn-danger {
+  color: var(--red-600);
+  border-color: var(--red-600);
+}
+
+.btn-danger:hover {
+  background: var(--red-50);
+}
+
+.btn-secondary {
+  background: var(--gray-100);
+  color: var(--gray-900);
+  border-color: var(--gray-300);
+}
+
+.btn-secondary:hover {
+  background: var(--gray-200);
+}
+
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.btn-icon {
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
+/* ---------- Pills / status chips ---------- */
+.pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pill.Healthy   { background: var(--green-50);  color: var(--green-700); }
+.pill.Warning   { background: #FFF3E0;          color: #E65100; }
+.pill.HighAlert { background: var(--red-50);    color: #B71C1C; }
+
+/* ---------- Modal ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 20px;
+}
+
+.modal.open { display: flex; }
+
+.modal-body {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 22px;
+  min-width: 420px;
+  max-width: 640px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-body h2 {
+  font-size: 16px;
+  margin-bottom: 14px;
+  color: var(--gray-900);
+}
+
+.modal-body .field { margin-bottom: 10px; }
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+  align-items: center;
+}
+
+/* ---------- Backdrop (for modal + history) ---------- */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ---------- Anchor table (inside modal) ---------- */
+.anchor-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.anchor-table th {
+  background: var(--gray-100);
+  padding: 6px 8px;
+  text-align: left;
+  font-size: 11px;
+  color: var(--gray-700);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.anchor-table td {
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.anchor-table input {
+  padding: 5px 7px;
+  font-size: 13px;
+  border: 1px solid var(--gray-300);
+  border-radius: 4px;
+  width: 100%;
+}
+
+.anchor-table button {
+  padding: 3px 8px;
+  font-size: 11px;
+  color: var(--red-600);
+}

@@ -1,0 +1,32 @@
+/* =============================================================================
+   PRINT · A4 optimized report output
+   ============================================================================= */
+
+@media print {
+  .topbar,
+  .toolbar,
+  .history-panel,
+  .backdrop,
+  #editView {
+    display: none !important;
+  }
+
+  body { background: #fff; }
+
+  main {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .preview-doc {
+    box-shadow: none;
+    border-radius: 0;
+    padding: 14mm;
+  }
+
+  @page {
+    size: A4;
+    margin: 8mm;
+  }
+}
