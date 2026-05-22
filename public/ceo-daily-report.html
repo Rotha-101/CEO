@@ -4727,22 +4727,32 @@ async function makePreviewReport(ev) {
     // Clone the document to strip out UI
     const clonedHtml = document.documentElement.cloneNode(true);
     
-    // Remove unwanted elements
-    const toRemove = [
-      '.topbar',
-      '.toolbar',
-      '#editView',
-      '#historyPanel',
-      '#siteModal',
-      '#settingsModal',
-      '#backdrop'
-    ];
-    toRemove.forEach(selector => {
-      const el = clonedHtml.querySelector(selector);
-      if (el) el.remove();
-    });
+    // Inject Management Mode CSS into the cloned document's head
+    // This hides all editing/authoring tools but preserves the date navigation
+    const managementCss = `
+      #tabEdit,
+      button[data-action="open-history"],
+      button[data-action="export"],
+      button[data-action="import"],
+      button[data-action="print"],
+      button[data-action="screenshot"],
+      button[data-action="make-report"],
+      button[data-action="make-preview-report"],
+      button[data-action="open-settings"],
+      button[data-action="save"] { display: none !important; }
+      
+      #editView, #settingsModal, #siteModal, #historyPanel { display: none !important; }
+      #previewView { display: block !important; }
+    `;
+    const styleEl = document.createElement('style');
+    styleEl.textContent = managementCss;
+    clonedHtml.querySelector('head').appendChild(styleEl);
 
-    // Ensure preview is visible
+    // Remove backdrop if it was open
+    const bd = clonedHtml.querySelector('#backdrop');
+    if (bd) bd.remove();
+
+    // Ensure preview is visible (also handled by CSS, but good measure)
     const pv = clonedHtml.querySelector('#previewView');
     if (pv) pv.classList.remove('hidden');
 

@@ -23,10 +23,25 @@ else:
         with open(os.path.join(REPORTS_DIR, selected_report), "r", encoding="utf-8") as f:
             html_content = f.read()
             
-        # Force Preview-Only Mode (in case the full app was uploaded instead of a preview snapshot)
+        # Force Preview-Only Mode but preserve Date Navigation and Topbar
         force_preview_css = """
         <style>
-          .topbar, .toolbar, #editView, #settingsModal, #siteModal, #historyPanel, #backdrop { display: none !important; }
+          /* Hide edit tools, history, export, import, print, screenshot, make report, save */
+          #tabEdit,
+          button[data-action="open-history"],
+          button[data-action="export"],
+          button[data-action="import"],
+          button[data-action="print"],
+          button[data-action="screenshot"],
+          button[data-action="make-report"],
+          button[data-action="make-preview-report"],
+          button[data-action="open-settings"],
+          button[data-action="save"] { display: none !important; }
+          
+          /* Hide edit view and modals */
+          #editView, #settingsModal, #siteModal, #historyPanel { display: none !important; }
+          
+          /* Force preview view */
           #previewView { display: block !important; }
         </style>
         """
