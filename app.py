@@ -10,13 +10,22 @@ st.title("CEO Daily Report - Management Dashboard")
 REPORTS_DIR = "reports"
 os.makedirs(REPORTS_DIR, exist_ok=True)
 
-report_files = [f for f in os.listdir(REPORTS_DIR) if f.endswith('.html')]
-report_files.sort(reverse=True) # Show newest first
+all_files = [f for f in os.listdir(REPORTS_DIR) if f.endswith('.html')]
 
-if not report_files:
+def sort_key(filename):
+    # Prioritize auto-generated preview reports (1) over manual uploads (0)
+    # The filename contains an ISO timestamp, so alphabetical sorting within the group works perfectly
+    if filename.startswith("SchneiTec_CEO_Daily_Report_Preview_"):
+        return (1, filename)
+    else:
+        return (0, filename)
+
+all_files.sort(key=sort_key, reverse=True)
+
+if not all_files:
     st.info("No reports found. Generate a report from the CEO Daily App and click 'Send Preview' to automatically sync it here via GitHub.")
 else:
-    selected_report = st.sidebar.selectbox("Select Report to View", report_files)
+    selected_report = st.sidebar.selectbox("Select Report to View", all_files)
     
     if selected_report:
         st.subheader(f"Viewing: {selected_report}")
