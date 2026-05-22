@@ -23,5 +23,17 @@ else:
         with open(os.path.join(REPORTS_DIR, selected_report), "r", encoding="utf-8") as f:
             html_content = f.read()
             
+        # Force Preview-Only Mode (in case the full app was uploaded instead of a preview snapshot)
+        force_preview_css = """
+        <style>
+          .topbar, .toolbar, #editView, #settingsModal, #siteModal, #historyPanel, #backdrop { display: none !important; }
+          #previewView { display: block !important; }
+        </style>
+        """
+        if '</head>' in html_content:
+            html_content = html_content.replace('</head>', force_preview_css + '</head>')
+        else:
+            html_content += force_preview_css
+            
         # Display the HTML
         components.html(html_content, height=1000, scrolling=True)
