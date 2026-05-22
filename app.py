@@ -2,9 +2,23 @@ import streamlit as st
 import os
 import streamlit.components.v1 as components
 
-st.set_page_config(page_title="CEO Portal", layout="wide")
+st.set_page_config(page_title="CEO Portal", layout="wide", initial_sidebar_state="expanded")
 
-st.title("CEO Daily Report - Portal")
+# Inject CSS to make the app use 100% of the screen
+st.markdown("""
+<style>
+    .block-container {
+        padding-top: 0rem !important;
+        padding-bottom: 0rem !important;
+        padding-left: 0rem !important;
+        padding-right: 0rem !important;
+        max-width: 100% !important;
+    }
+    header { display: none !important; }
+    footer { display: none !important; }
+    #MainMenu { display: none !important; }
+</style>
+""", unsafe_allow_html=True)
 
 # Sidebar navigation
 st.sidebar.header("Navigation")
@@ -12,15 +26,14 @@ mode = st.sidebar.radio("Portal Mode", ["📊 Management Viewer", "✍️ Editor
 st.sidebar.markdown("---")
 
 if mode == "✍️ Editor App":
-    st.subheader("CEO Daily Report - Editor Mode")
-    st.info("You have full access to edit the report, configure settings, and sync to GitHub.")
+    st.sidebar.info("You have full access to edit the report, configure settings, and sync to GitHub.")
     
     # Load the standalone application from the public directory
     app_path = os.path.join("public", "ceo-daily-report.html")
     if os.path.exists(app_path):
         with open(app_path, "r", encoding="utf-8") as f:
             html_content = f.read()
-        components.html(html_content, height=1000, scrolling=True)
+        components.html(html_content, height=1200, scrolling=True)
     else:
         st.error("The CEO Daily Report App could not be found. Please ensure it is built in the public/ folder.")
 
@@ -42,12 +55,11 @@ elif mode == "📊 Management Viewer":
     all_files.sort(key=sort_key, reverse=True)
     
     if not all_files:
-        st.info("No reports found. Generate a report from the Editor App and click 'Send Preview' to automatically sync it here.")
+        st.sidebar.info("No reports found. Generate a report from the Editor App and click 'Send Preview' to automatically sync it here.")
     else:
         selected_report = st.sidebar.selectbox("Select Report to View", all_files)
         
         if selected_report:
-            st.subheader(f"Viewing: {selected_report}")
             with open(os.path.join(REPORTS_DIR, selected_report), "r", encoding="utf-8") as f:
                 html_content = f.read()
                 
@@ -79,4 +91,4 @@ elif mode == "📊 Management Viewer":
                 html_content += force_preview_css
                 
             # Display the HTML
-            components.html(html_content, height=1000, scrolling=True)
+            components.html(html_content, height=1200, scrolling=True)
