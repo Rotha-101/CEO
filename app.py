@@ -161,8 +161,8 @@ elif mode == "📊 Management Viewer":
               /* Hide the entire toolbar since Management Viewer has its own date selector */
               .toolbar { display: none !important; }
               
-              /* Force reset any zoom scaling that might have been snapshotted from Editor */
-              html, .app-root { --app-scale: 1 !important; zoom: 1 !important; transform: none !important; }
+              /* Scale down the Management Viewer so it fits nicely on screen */
+              html, .app-root { --app-scale: 0.75 !important; zoom: 0.75 !important; transform: none !important; }
               
               /* Hide edit view and modals */
               #editView, #settingsModal, #siteModal, #historyPanel { display: none !important; }
