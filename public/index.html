@@ -1079,21 +1079,21 @@ main {
 }
 
 .plant-summary h3 {
-  font-size: 16px;
+  font-size: 18px;
   color: var(--text-primary);
-  margin-bottom: 10px;
-  padding-bottom: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .plant-summary h3 .plant-name   { font-weight: 700; }
-.plant-summary h3 .plant-meta   { font-size: 13px; color: var(--text-secondary); font-weight: 500; margin-right: auto; }
-.plant-summary h3 .plant-status { font-size: 12px; padding: 3px 9px; }
-.plant-summary h3 .dot { width: 10px; height: 10px; border-radius: 50%; }
+.plant-summary h3 .plant-meta   { font-size: 15px; color: var(--text-secondary); font-weight: 500; margin-right: auto; }
+.plant-summary h3 .plant-status { font-size: 13px; padding: 4px 10px; }
+.plant-summary h3 .dot { width: 12px; height: 12px; border-radius: 50%; }
 
 /* ---------- KPI cards ---------- */
 .plant-kpis {
@@ -1133,18 +1133,18 @@ main {
 }
 
 .kpi .v {
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.15;
 }
 
 .kpi .l {
-  font-size: 12px;
+  font-size: 15px;
   text-transform: uppercase;
   color: var(--text-secondary);
   letter-spacing: 0.8px;
-  margin-top: 3px;
+  margin-top: 5px;
 }
 
 .kpi.good   .v { color: var(--green-700); }
@@ -1176,18 +1176,18 @@ main {
 }
 
 .kpi-split .split-col .sv {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.1;
 }
 
 .kpi-split .split-col .sl {
-  font-size: 11px;
+  font-size: 14px;
   text-transform: uppercase;
   color: var(--text-secondary);
   letter-spacing: 0.5px;
-  margin-top: 3px;
+  margin-top: 4px;
   font-weight: 600;
 }
 
@@ -1230,18 +1230,18 @@ main {
 }
 
 .kpi-multi .multi-col .sv {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.1;
 }
 
 .kpi-multi .multi-col .sl {
-  font-size: 11px;
+  font-size: 14px;
   text-transform: uppercase;
   color: var(--text-secondary);
   letter-spacing: 0.5px;
-  margin-top: 3px;
+  margin-top: 4px;
   font-weight: 600;
 }
 
@@ -1272,16 +1272,16 @@ main {
 .spare-parts-panel table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .spare-parts-panel thead th {
   background: var(--blue-700);
   color: var(--white);
-  padding: 12px 14px;
+  padding: 14px 18px;
   text-align: left;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 0.3px;
 }
 
@@ -1291,7 +1291,7 @@ main {
 }
 
 .spare-parts-panel tbody td {
-  padding: 10px 14px;
+  padding: 12px 18px;
   border-bottom: 1px solid var(--border);
   background: var(--surface-2);
   color: var(--text-primary);
@@ -4774,8 +4774,8 @@ async function makePreviewReport(ev) {
       /* Hide the entire toolbar since Management Viewer has its own date selector */
       .toolbar { display: none !important; }
       
-      /* Scale down the Management Viewer so it fits nicely on screen */
-      html, .app-root { --app-scale: 0.75 !important; zoom: 0.75 !important; transform: none !important; }
+      /* Force reset any zoom scaling that might have been snapshotted from Editor */
+      html, .app-root { --app-scale: 1 !important; zoom: 1 !important; transform: none !important; }
       
       #editView, #settingsModal, #siteModal, #historyPanel { display: none !important; }
       #previewView { display: block !important; }
