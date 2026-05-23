@@ -333,16 +333,11 @@ export async function makePreviewReport(ev) {
     // Inject Management Mode CSS into the cloned document's head
     // This hides all editing/authoring tools but preserves the date navigation
     const managementCss = `
-      #tabEdit,
-      button[data-action="open-history"],
-      button[data-action="export"],
-      button[data-action="import"],
-      button[data-action="print"],
-      button[data-action="screenshot"],
-      button[data-action="make-report"],
-      button[data-action="make-preview-report"],
-      button[data-action="open-settings"],
-      button[data-action="save"] { display: none !important; }
+      /* Hide the entire toolbar since Management Viewer has its own date selector */
+      .toolbar { display: none !important; }
+      
+      /* Force reset any zoom scaling that might have been snapshotted from Editor */
+      html, .app-root { --app-scale: 1 !important; zoom: 1 !important; transform: none !important; }
       
       #editView, #settingsModal, #siteModal, #historyPanel { display: none !important; }
       #previewView { display: block !important; }

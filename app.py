@@ -158,17 +158,11 @@ elif mode == "📊 Management Viewer":
             # Force Preview-Only Mode but preserve Date Navigation and Topbar
             force_preview_css = """
             <style>
-              /* Hide edit tools, history, export, import, print, screenshot, make report, save */
-              #tabEdit,
-              button[data-action="open-history"],
-              button[data-action="export"],
-              button[data-action="import"],
-              button[data-action="print"],
-              button[data-action="screenshot"],
-              button[data-action="make-report"],
-              button[data-action="make-preview-report"],
-              button[data-action="open-settings"],
-              button[data-action="save"] { display: none !important; }
+              /* Hide the entire toolbar since Management Viewer has its own date selector */
+              .toolbar { display: none !important; }
+              
+              /* Force reset any zoom scaling that might have been snapshotted from Editor */
+              html, .app-root { --app-scale: 1 !important; zoom: 1 !important; transform: none !important; }
               
               /* Hide edit view and modals */
               #editView, #settingsModal, #siteModal, #historyPanel { display: none !important; }
@@ -183,4 +177,4 @@ elif mode == "📊 Management Viewer":
                 html_content += force_preview_css
                 
             # Display the HTML
-            components.html(html_content, height=1200, scrolling=True)
+            components.html(html_content, height=1800, scrolling=True)
