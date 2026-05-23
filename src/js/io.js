@@ -404,15 +404,6 @@ export async function makePreviewReport(ev) {
       // Add a timestamp to the filename so multiple reports in a day don't clash
       const timeStr = new Date().toISOString().replace(/[:.]/g, '-');
       const ghFilename = `SchneiTec_CEO_Daily_Report_Preview_${timeStr}.html`;
-      
-      // Send directly to Streamlit backend first for instant previewing
-      if (window.parent !== window) {
-        Streamlit.setComponentValue({
-          filename: ghFilename,
-          html: output
-        });
-      }
-
       const apiUrl = `https://api.github.com/repos/${githubRepo.trim()}/contents/reports/${ghFilename}`;
       
       const payload = {
@@ -433,6 +424,15 @@ export async function makePreviewReport(ev) {
       if (!resp.ok) {
         const errData = await resp.json();
         throw new Error(errData.message || `HTTP ${resp.status}`);
+      }
+
+      // Send directly to Streamlit backend for instant previewing AFTER successful GitHub upload
+      // This prevents Streamlit's iframe re-render from aborting the fetch request.
+      if (window.parent !== window) {
+        Streamlit.setComponentValue({
+          filename: ghFilename,
+          html: output
+        });
       }
 
       if (btn) {
