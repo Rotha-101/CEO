@@ -6,58 +6,83 @@ st.set_page_config(page_title="CEO Portal", layout="wide", initial_sidebar_state
 # Inject CSS to make the app use 100% of the screen
 st.markdown("""
 <style>
-    /* Premium UI & Full Screen Layout */
+    /* Premium UI & Full Screen Layout - Hex.tech Inspired */
     .block-container {
-        padding-top: 0rem !important;
+        padding-top: 1rem !important;
         padding-bottom: 0rem !important;
-        padding-left: 0rem !important;
-        padding-right: 0rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
         max-width: 100% !important;
+        background-color: #ffffff;
     }
     header { display: none !important; }
     footer { display: none !important; }
-    #MainMenu { display: none !important; }
     
-    /* Sidebar Premium Styling */
-    [data-testid="stSidebar"] {
-        background-color: #ffffff !important;
-        border-right: 1px solid #e2e8f0;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.03);
-    }
-    
-    /* Stylize the Radio Button Group */
+    /* Hex.tech Segmented Control for Radio Buttons */
     div.row-widget.stRadio > div {
-        background: #f8fafc;
-        border-radius: 12px;
-        padding: 12px;
-        border: 1px solid #e2e8f0;
-        box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.01);
+        background-color: #f1f5f9;
+        border-radius: 8px;
+        padding: 4px;
+        display: inline-flex;
+        border: none;
+        box-shadow: none;
+        gap: 4px;
     }
     
-    /* Stylize the Selectbox */
-    div[data-baseweb="select"] > div {
-        border-radius: 10px !important;
-        border-color: #cbd5e1 !important;
-        background-color: #ffffff !important;
-        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05) !important;
+    div.row-widget.stRadio [role="radiogroup"] > label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 14px;
+        border-radius: 6px;
+        margin: 0;
+        cursor: pointer;
         transition: all 0.2s ease;
     }
+    
+    /* Selected tab styling using CSS :has() */
+    div.row-widget.stRadio label:has(div[aria-checked="true"]) {
+        background-color: #ffffff !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06) !important;
+    }
+    
+    div.row-widget.stRadio label:has(div[aria-checked="true"]) [data-testid="stMarkdownContainer"] p {
+        color: #0f172a !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Unselected text */
+    div.row-widget.stRadio [data-testid="stMarkdownContainer"] p {
+        margin: 0 !important;
+        font-weight: 500;
+        font-size: 14px;
+        color: #64748b;
+    }
+    
+    /* Hide the radio circles */
+    div.row-widget.stRadio div[role="radio"] div:first-child {
+        display: none !important;
+    }
+    
+    /* Hex.tech Sleek Selectbox */
+    div[data-baseweb="select"] > div {
+        border-radius: 8px !important;
+        border: 1px solid #e2e8f0 !important;
+        background-color: #ffffff !important;
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.03) !important;
+        transition: all 0.2s ease;
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
     div[data-baseweb="select"] > div:hover {
-        border-color: #94a3b8 !important;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1) !important;
+        border-color: #cbd5e1 !important;
     }
     
-    /* Sidebar Headers */
-    [data-testid="stSidebar"] h2 {
-        color: #0f172a;
-        font-weight: 700;
-        letter-spacing: -0.025em;
-    }
-    
-    /* Info/Success Boxes */
+    /* Alerts */
     div[data-testid="stAlert"] {
-        border-radius: 10px;
-        border: none;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.02);
     }
 </style>
 """, unsafe_allow_html=True)
