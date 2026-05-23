@@ -354,53 +354,59 @@ export async function makePreviewReport(ev) {
     // Check GitHub sync
     const githubToken = localStorage.getItem('ceoDailyReportGithubToken');
     const githubRepo = localStorage.getItem('ceoDailyReportGithubRepo');
-    if (githubToken && githubToken.trim() !== '' && githubRepo && githubRepo.trim() !== '') {
-      if (btn) btn.textContent = '🚀 Syncing to GitHub...';
-      try {
-        // Base64 encode the string (handling unicode safely)
-        const base64Content = btoa(unescape(encodeURIComponent(output)));
-        
-        // Add a timestamp to the filename so multiple reports in a day don't clash
-        const timeStr = new Date().toISOString().replace(/[:.]/g, '-');
-        const ghFilename = `SchneiTec_CEO_Daily_Report_Preview_${timeStr}.html`;
-        const apiUrl = `https://api.github.com/repos/${githubRepo.trim()}/contents/reports/${ghFilename}`;
-        
-        const payload = {
-          message: `Add CEO Daily Report Preview for ${state.currentDate}`,
-          content: base64Content
-        };
-
-        const resp = await fetch(apiUrl, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `token ${githubToken.trim()}`,
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
-
-        if (!resp.ok) {
-          const errData = await resp.json();
-          throw new Error(errData.message || `HTTP ${resp.status}`);
-        }
-
-        if (btn) {
-          btn.textContent = '✓ Synced to GitHub';
-          setTimeout(() => { btn.textContent = origText; }, 2000);
-        }
-      } catch (uploadErr) {
-        console.error('GitHub sync failed:', uploadErr);
-        alert('Preview downloaded, but failed to sync to GitHub: ' + uploadErr.message);
-        if (btn) {
-          btn.textContent = '❌ Sync Failed';
-          setTimeout(() => { btn.textContent = origText; }, 2000);
-        }
-      }
-    } else {
+    if (!githubToken || githubToken.trim() === '' || !githubRepo || githubRepo.trim() === '') {
+      alert('⚠️ Settings Missing: You must configure your GitHub Token and Repository in Settings before you can sync to the Management Viewer.');
       if (btn) {
-        btn.textContent = '✓ Preview Saved';
-        setTimeout(() => { btn.textContent = origText; }, 1500);
+        btn.textContent = '❌ Sync Failed';
+        setTimeout(() => { btn.textContent = origText; }, 2000);
+      }
+      openSettings();
+      return;
+    }
+
+    if (btn) btn.textContent = '🚀 Syncing to GitHub...';
+    try {
+      // Base64 encode the string (handling unicode safely)
+      const base64Content = btoa(unescape(encodeURIComponent(output)));
+      
+      // Add a timestamp to the filename so multiple reports in a day don't clash
+      const timeStr = new Date().toISOString().replace(/[:.]/g, '-');
+      const ghFilename = `SchneiTec_CEO_Daily_Report_Preview_${timeStr}.html`;
+      const apiUrl = `https://api.github.com/repos/${githubRepo.trim()}/contents/reports/${ghFilename}`;
+      
+      const payload = {
+        message: `Add CEO Daily Report Preview for ${state.currentDate}`,
+        content: base64Content
+      };
+
+      const resp = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${githubToken.trim()}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!resp.ok) {
+        const errData = await resp.json();
+        throw new Error(errData.message || `HTTP ${resp.status}`);
+      }
+
+      if (btn) {
+        btn.textContent = '✓ Synced to GitHub';
+        setTimeout(() => { btn.textContent = origText; }, 2000);
+      }
+      
+      // Notify the user that it might take a minute to appear
+      alert('✅ Successfully synced to GitHub!\n\nPlease note: It may take 30-60 seconds for the Streamlit Cloud app to update and display the new report in the Management Viewer.');
+    } catch (uploadErr) {
+      console.error('GitHub sync failed:', uploadErr);
+      alert('Preview downloaded, but failed to sync to GitHub: ' + uploadErr.message);
+      if (btn) {
+        btn.textContent = '❌ Sync Failed';
+        setTimeout(() => { btn.textContent = origText; }, 2000);
       }
     }
   } catch (err) {
