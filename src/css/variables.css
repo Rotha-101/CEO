@@ -60,7 +60,7 @@
   /* App scale and smooth transitions */
   --app-scale: 1;
   --transition-speed: 200ms;
-  --bg: var(--gray-50);
+  --bg: var(--gray-100);
   --surface: var(--white);
   --surface-2: var(--white);
   --surface-3: var(--gray-50);

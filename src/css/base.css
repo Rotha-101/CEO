@@ -68,7 +68,7 @@ textarea {
   content: "";
   width: 4px;
   height: 14px;
-  background: var(--green-700);
+  background: var(--blue-500);
   border-radius: 2px;
 }
 
