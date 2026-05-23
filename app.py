@@ -1,8 +1,7 @@
 import streamlit as st
 import os
 import streamlit.components.v1 as components
-
-st.set_page_config(page_title="CEO Portal", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="CEO Portal", layout="wide", initial_sidebar_state="collapsed")
 
 # Inject CSS to make the app use 100% of the screen
 st.markdown("""
@@ -63,13 +62,14 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Sidebar navigation
-st.sidebar.header("Navigation")
-mode = st.sidebar.radio("Portal Mode", ["📊 Management Viewer", "✍️ Editor App"])
-st.sidebar.markdown("---")
+# Top Navigation Header
+col1, col2 = st.columns([1, 1])
+
+with col1:
+    mode = st.radio("Portal Mode", ["📊 Management Viewer", "✍️ Editor App"], horizontal=True, label_visibility="collapsed")
 
 if mode == "✍️ Editor App":
-    st.sidebar.info("You have full access to edit the report, configure settings, and sync to GitHub.")
+    st.info("You have full access to edit the report, configure settings, and sync to GitHub.")
     
     # Load the bidirectional Editor component from the public directory
     app_path = "public"
@@ -121,9 +121,10 @@ elif mode == "📊 Management Viewer":
     all_files.sort(key=sort_key, reverse=True)
     
     if not all_files:
-        st.sidebar.info("No reports found. Generate a report from the Editor App and click 'Send Preview' to automatically sync it here.")
+        st.info("No reports found. Generate a report from the Editor App and click 'Send Preview' to automatically sync it here.")
     else:
-        selected_report = st.sidebar.selectbox("Select Report to View", all_files)
+        with col2:
+            selected_report = st.selectbox("Select Report to View", all_files, label_visibility="collapsed")
         
         if selected_report:
             with open(os.path.join(REPORTS_DIR, selected_report), "r", encoding="utf-8") as f:
