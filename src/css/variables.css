@@ -7,51 +7,49 @@
 
 :root {
   /* Brand greens (SchneiTec) */
-  --green-900: #1B5E20;
-  --green-700: #2E7D32;
-  --green-500: #4CAF50;
-  --green-300: #A5D6A7;
-  --green-50:  #E8F5E9;
+  --green-900: #064e3b;
+  --green-700: #15803d;
+  --green-500: #22c55e;
+  --green-300: #86efac;
+  --green-50:  #f0fdf4;
 
   /* Blue accents (SNTL600) */
-  --blue-700: #1976D2;
-  --blue-500: #2196F3;
-  --blue-50:  #E3F2FD;
+  --blue-700: #1d4ed8;
+  --blue-500: #3b82f6;
+  --blue-50:  #eff6ff;
 
   /* Status amber */
-  --amber-500:  #FB8C00;
-  --orange-500: #FFA726;
+  --amber-500:  #f59e0b;
+  --orange-500: #f97316;
 
   /* Danger red */
-  --red-600: #E53935;
-  --red-50:  #FFEBEE;
+  --red-600: #dc2626;
+  --red-50:  #fef2f2;
 
-  /* Grayscale ramp */
-  --gray-900: #212121;
-  --gray-700: #424242;
-  --gray-500: #757575;
-  --gray-300: #BDBDBD;
-  --gray-200: #E0E0E0;
-  --gray-100: #F5F5F5;
-  --gray-50:  #FAFAFA;
-  --white:    #FFFFFF;
+  /* Grayscale ramp - Hex.tech Slate/Gray */
+  --gray-900: #0f172a;
+  --gray-700: #334155;
+  --gray-500: #64748b;
+  --gray-300: #cbd5e1;
+  --gray-200: #e2e8f0;
+  --gray-100: #f1f5f9;
+  --gray-50:  #f8fafc;
+  --white:    #ffffff;
 
-  /* Shadows */
-  --shadow:    0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
-  --shadow-lg: 0 4px 6px rgba(0,0,0,.07), 0 10px 20px rgba(0,0,0,.05);
+  /* Hex.tech Shadows */
+  --shadow:    0 1px 2px 0 rgba(0,0,0,0.05);
+  --shadow-lg: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
 
   /* Radii */
-  --radius:    10px;
-  --radius-sm: 6px;
+  --radius:    12px;
+  --radius-sm: 8px;
 
-  /* Plant-specific accent colors
-     (also mirrored in src/js/config.js — keep in sync)                       */
-  --sntl600-color: #1976D2;
-  --sntl400-color: #2E7D32;
+  /* Plant-specific accent colors */
+  --sntl600-color: #2563eb;
+  --sntl400-color: #16a34a;
 
   /* Typography scale */
-  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
-                 "Noto Sans", Roboto, sans-serif;
+  --font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-size-xs:   10px;
   --font-size-sm:   12px;
   --font-size-base: 14px;
@@ -61,13 +59,13 @@
 
   /* App scale and smooth transitions */
   --app-scale: 1;
-  --transition-speed: 220ms;
-  --bg: var(--gray-100);
+  --transition-speed: 200ms;
+  --bg: var(--gray-50);
   --surface: var(--white);
-  --surface-2: var(--gray-100);
-  --surface-3: var(--gray-200);
+  --surface-2: var(--white);
+  --surface-3: var(--gray-50);
   --text-primary: var(--gray-900);
-  --text-secondary: var(--gray-700);
+  --text-secondary: var(--gray-500);
   --border: var(--gray-200);
 }
 

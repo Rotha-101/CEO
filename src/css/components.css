@@ -2,11 +2,20 @@
    COMPONENTS · Buttons, cards, modals, pills
    ============================================================================= */
 
+/* ---------- Cards ---------- */
 .card {
   background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: var(--radius);
+  border: 1px solid var(--border);
   box-shadow: var(--shadow);
+  padding: 18px 24px;
+  margin-bottom: 24px;
+  transition: box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: var(--gray-300);
 }
 
 /* ---------- Buttons ---------- */
