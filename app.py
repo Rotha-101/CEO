@@ -161,8 +161,8 @@ elif mode == "📊 Management Viewer":
               /* Hide the entire toolbar since Management Viewer has its own date selector */
               .toolbar { display: none !important; }
               
-              /* Scale down the Management Viewer so it fits nicely on screen */
-              html, .app-root { --app-scale: 0.75 !important; zoom: 0.75 !important; transform: none !important; }
+              /* Scale down the entire dashboard in Management Viewer so it fits better on screen */
+              html, .app-root { --app-scale: 0.8 !important; zoom: 0.8 !important; transform: none !important; }
               
               /* Hide edit view and modals */
               #editView, #settingsModal, #siteModal, #historyPanel { display: none !important; }
