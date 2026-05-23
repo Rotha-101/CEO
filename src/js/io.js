@@ -15,6 +15,38 @@ import { renderEdit } from './render-edit.js';
 import { renderPreview } from './render-preview.js';
 import { setView } from './navigation.js';
 
+/* ---------- Streamlit Component API ---------- */
+const Streamlit = {
+  setComponentReady: function() {
+    window.parent.postMessage({
+      isStreamlitMessage: true,
+      type: "streamlit:componentReady",
+      apiVersion: 1
+    }, "*");
+  },
+  setFrameHeight: function(height) {
+    window.parent.postMessage({
+      isStreamlitMessage: true,
+      type: "streamlit:setFrameHeight",
+      height: height
+    }, "*");
+  },
+  setComponentValue: function(value) {
+    window.parent.postMessage({
+      isStreamlitMessage: true,
+      type: "streamlit:setComponentValue",
+      value: value
+    }, "*");
+  }
+};
+
+// Initialize Streamlit component connection if running inside an iframe
+if (window.parent !== window) {
+  Streamlit.setComponentReady();
+  // Set initial height; Streamlit will handle scrolling via components.html/declare_component args
+  Streamlit.setFrameHeight(1200);
+}
+
 /* ---------- Save (localStorage) ---------- */
 export function saveReport(ev) {
   state.currentReport.updatedAt = new Date().toISOString();
@@ -372,6 +404,15 @@ export async function makePreviewReport(ev) {
       // Add a timestamp to the filename so multiple reports in a day don't clash
       const timeStr = new Date().toISOString().replace(/[:.]/g, '-');
       const ghFilename = `SchneiTec_CEO_Daily_Report_Preview_${timeStr}.html`;
+      
+      // Send directly to Streamlit backend first for instant previewing
+      if (window.parent !== window) {
+        Streamlit.setComponentValue({
+          filename: ghFilename,
+          html: output
+        });
+      }
+
       const apiUrl = `https://api.github.com/repos/${githubRepo.trim()}/contents/reports/${ghFilename}`;
       
       const payload = {

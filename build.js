@@ -18,7 +18,7 @@ const path = require('path');
 const ROOT = __dirname;
 const INDEX = path.join(ROOT, 'index.html');
 const OUT_DIR = path.join(ROOT, 'public');
-const OUT_FILE = path.join(OUT_DIR, 'ceo-daily-report.html');
+const OUT_FILE = path.join(OUT_DIR, 'index.html');
 
 function read(p) { return fs.readFileSync(p, 'utf8'); }
 

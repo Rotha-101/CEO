@@ -28,14 +28,37 @@ st.sidebar.markdown("---")
 if mode == "✍️ Editor App":
     st.sidebar.info("You have full access to edit the report, configure settings, and sync to GitHub.")
     
-    # Load the standalone application from the public directory
-    app_path = os.path.join("public", "ceo-daily-report.html")
-    if os.path.exists(app_path):
-        with open(app_path, "r", encoding="utf-8") as f:
-            html_content = f.read()
-        components.html(html_content, height=1200, scrolling=True)
+    # Load the bidirectional Editor component from the public directory
+    app_path = "public"
+    if os.path.exists(os.path.join(app_path, "index.html")):
+        # declare_component looks for index.html in the specified path
+        editor_app = components.declare_component("editor_app", path=app_path)
+        
+        # Call the component to render it and receive data back via setComponentValue
+        report_data = editor_app(default=None)
+        
+        # If the frontend sent us a report, save it locally immediately
+        if report_data and isinstance(report_data, dict):
+            if "filename" in report_data and "html" in report_data:
+                REPORTS_DIR = "reports"
+                os.makedirs(REPORTS_DIR, exist_ok=True)
+                file_path = os.path.join(REPORTS_DIR, report_data["filename"])
+                
+                # We only write if the content differs to avoid excessive saves on re-runs
+                should_save = True
+                if os.path.exists(file_path):
+                    with open(file_path, "r", encoding="utf-8") as f:
+                        if f.read() == report_data["html"]:
+                            should_save = False
+                
+                if should_save:
+                    with open(file_path, "w", encoding="utf-8") as f:
+                        f.write(report_data["html"])
+                    # Use toast or success to indicate instant sync
+                    st.toast("✅ Report synced directly to Streamlit for instant preview!")
+                    
     else:
-        st.error("The CEO Daily Report App could not be found. Please ensure it is built in the public/ folder.")
+        st.error("The CEO Daily Report App could not be found. Please ensure it is built in the public/ folder as index.html.")
 
 elif mode == "📊 Management Viewer":
     # Read reports from a directory

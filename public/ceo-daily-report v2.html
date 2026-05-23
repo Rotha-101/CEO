@@ -1760,6 +1760,8 @@ table.report-table tr:hover td { background: var(--surface-2); }
   <button class="btn"            data-action="print">🖨 Print</button>
   <button class="btn"            data-action="screenshot">📸 Screenshot</button>
   <button class="btn"            data-action="make-report">📄 Make Report</button>
+  <button class="btn"            data-action="make-preview-report" title="Send Preview-Only Report">▣ Send Preview</button>
+  <button class="btn"            data-action="open-settings" title="Configure Webhook URL">⚙️ Settings</button>
   <button class="btn btn-primary" data-action="save">💾 Save</button>
 </div>
 
@@ -1954,6 +1956,27 @@ table.report-table tr:hover td { background: var(--surface-2); }
   </div>
 </div>
 
+</div>
+
+<!-- ==================== SETTINGS MODAL ==================== -->
+<div class="modal" id="settingsModal">
+  <div class="modal-body">
+    <h2>GitHub Integration Settings</h2>
+    <div class="field">
+      <label>GitHub Personal Access Token</label>
+      <input id="settingGithubToken" type="password" placeholder="ghp_xxxxxxxxxxxx">
+      <small style="color:var(--gray-500);display:block;margin-top:4px;">Requires 'repo' scope. Used to commit reports directly to GitHub.</small>
+    </div>
+    <div class="field" style="margin-top: 12px;">
+      <label>GitHub Repository</label>
+      <input id="settingGithubRepo" type="text" placeholder="Owner/Repo (e.g. Rotha-101/CEO)">
+    </div>
+    <div class="modal-actions" style="margin-top:20px;">
+      <span style="flex:1"></span>
+      <button class="btn" data-action="close-settings">Cancel</button>
+      <button class="btn btn-primary" data-action="save-settings">Save Settings</button>
+    </div>
+  </div>
 </div>
 
 <!-- ==================== APP ENTRY ==================== -->
@@ -4587,6 +4610,7 @@ async function makeReport(ev) {
     try {
       const m = document.getElementById('siteModal'); if (m) m.classList.remove('open');
       const hp = document.getElementById('historyPanel'); if (hp) hp.classList.remove('open');
+      const sm = document.getElementById('settingsModal'); if (sm) sm.classList.remove('open');
       const bd = document.getElementById('backdrop'); if (bd) bd.classList.remove('open');
       const tt = document.getElementById('chartTooltip'); if (tt) tt.style.display = 'none';
     } catch (_) {}
@@ -4620,24 +4644,231 @@ async function makeReport(ev) {
     const output = htmlSource.replace('<head>', '<head>' + snapshotScript);
 
     const blob = new Blob([output], { type: 'text/html;charset=utf-8' });
+    const filename = 'SchneiTec_CEO_Daily_Report_' + todayISO() + '.html';
+
+    // Download locally
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'SchneiTec_CEO_Daily_Report_' + todayISO() + '.html';
+    a.download = filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(a.href);
 
     const btn = ev && ev.target;
-    if (btn) {
-      const t = btn.textContent;
-      btn.textContent = '✓ Report Saved';
-      setTimeout(() => { btn.textContent = t; }, 1500);
+    const origText = btn ? btn.textContent : '';
+
+    // Check webhook upload
+    const webhookUrl = localStorage.getItem('ceoDailyReportWebhookUrl');
+    if (webhookUrl && webhookUrl.trim() !== '') {
+      if (btn) btn.textContent = '🚀 Sending...';
+      try {
+        const formData = new FormData();
+        formData.append('file', blob, filename);
+        const resp = await fetch(webhookUrl.trim(), {
+          method: 'POST',
+          body: formData
+        });
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        if (btn) {
+          btn.textContent = '✓ Sent to Dashboard';
+          setTimeout(() => { btn.textContent = origText; }, 2000);
+        }
+      } catch (uploadErr) {
+        console.error('Webhook upload failed:', uploadErr);
+        alert('Report downloaded, but failed to send to dashboard: ' + uploadErr.message);
+        if (btn) {
+          btn.textContent = '❌ Send Failed';
+          setTimeout(() => { btn.textContent = origText; }, 2000);
+        }
+      }
+    } else {
+      if (btn) {
+        btn.textContent = '✓ Report Saved';
+        setTimeout(() => { btn.textContent = origText; }, 1500);
+      }
     }
   } catch (err) {
     console.error('makeReport failed:', err);
     alert('Make Report failed: ' + (err && err.message ? err.message : 'unknown'));
   }
+}
+
+/* ---------- Make Preview Report: standalone HTML snapshot containing ONLY preview ---------- */
+async function makePreviewReport(ev) {
+  try {
+    state.store.reports[state.currentDate] = deepClone(state.currentReport);
+
+    let snapshot = JSON.stringify(state.store);
+    snapshot = snapshot
+      .replace(/\u2028/g, '\\u2028')
+      .replace(/\u2029/g, '\\u2029')
+      .replace(/<\/script>/gi, '<\\/script>');
+
+    if (state.currentView !== 'preview') setView('preview');
+
+    const coverImage = document.querySelector('.preview-cover img');
+    if (coverImage && coverImage.src && !coverImage.src.startsWith('data:')) {
+      try {
+        const response = await fetch(coverImage.src, { cache: 'force-cache' });
+        const blob = await response.blob();
+        const reader = new FileReader();
+        const dataUrl = await new Promise((resolve, reject) => {
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+        coverImage.src = dataUrl;
+      } catch (err) {
+        console.warn('Could not inline cover image for Make Report:', err);
+      }
+    }
+
+    // Clone the document to strip out UI
+    const clonedHtml = document.documentElement.cloneNode(true);
+    
+    // Inject Management Mode CSS into the cloned document's head
+    // This hides all editing/authoring tools but preserves the date navigation
+    const managementCss = `
+      #tabEdit,
+      button[data-action="open-history"],
+      button[data-action="export"],
+      button[data-action="import"],
+      button[data-action="print"],
+      button[data-action="screenshot"],
+      button[data-action="make-report"],
+      button[data-action="make-preview-report"],
+      button[data-action="open-settings"],
+      button[data-action="save"] { display: none !important; }
+      
+      #editView, #settingsModal, #siteModal, #historyPanel { display: none !important; }
+      #previewView { display: block !important; }
+    `;
+    const styleEl = document.createElement('style');
+    styleEl.textContent = managementCss;
+    clonedHtml.querySelector('head').appendChild(styleEl);
+
+    // Remove backdrop if it was open
+    const bd = clonedHtml.querySelector('#backdrop');
+    if (bd) bd.remove();
+
+    // Ensure preview is visible (also handled by CSS, but good measure)
+    const pv = clonedHtml.querySelector('#previewView');
+    if (pv) pv.classList.remove('hidden');
+
+    const htmlSource = '<!DOCTYPE html>\n' + clonedHtml.outerHTML;
+    const tag = '<' + 'script>';
+    const closeTag = '<' + '/' + 'script>';
+    const snapshotScript = '\n' + tag + '\n' +
+      '/* Hardcoded CEO Daily Report snapshot (Preview-Only) — generated ' + new Date().toLocaleString() + ' */\n' +
+      'window.__REPORT_SNAPSHOT__ = ' + snapshot + ';\n' +
+      closeTag + '\n';
+    const output = htmlSource.replace('<head>', '<head>' + snapshotScript);
+
+    const blob = new Blob([output], { type: 'text/html;charset=utf-8' });
+    const filename = 'SchneiTec_CEO_Daily_Report_Preview_' + todayISO() + '.html';
+
+    // Download locally
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+
+    const btn = ev && ev.target;
+    const origText = btn ? btn.textContent : '';
+
+    // Check GitHub sync
+    const githubToken = localStorage.getItem('ceoDailyReportGithubToken');
+    const githubRepo = localStorage.getItem('ceoDailyReportGithubRepo');
+    if (githubToken && githubToken.trim() !== '' && githubRepo && githubRepo.trim() !== '') {
+      if (btn) btn.textContent = '🚀 Syncing to GitHub...';
+      try {
+        // Base64 encode the string (handling unicode safely)
+        const base64Content = btoa(unescape(encodeURIComponent(output)));
+        
+        // Add a timestamp to the filename so multiple reports in a day don't clash
+        const timeStr = new Date().toISOString().replace(/[:.]/g, '-');
+        const ghFilename = `SchneiTec_CEO_Daily_Report_Preview_${timeStr}.html`;
+        const apiUrl = `https://api.github.com/repos/${githubRepo.trim()}/contents/reports/${ghFilename}`;
+        
+        const payload = {
+          message: `Add CEO Daily Report Preview for ${state.currentDate}`,
+          content: base64Content
+        };
+
+        const resp = await fetch(apiUrl, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${githubToken.trim()}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!resp.ok) {
+          const errData = await resp.json();
+          throw new Error(errData.message || `HTTP ${resp.status}`);
+        }
+
+        if (btn) {
+          btn.textContent = '✓ Synced to GitHub';
+          setTimeout(() => { btn.textContent = origText; }, 2000);
+        }
+      } catch (uploadErr) {
+        console.error('GitHub sync failed:', uploadErr);
+        alert('Preview downloaded, but failed to sync to GitHub: ' + uploadErr.message);
+        if (btn) {
+          btn.textContent = '❌ Sync Failed';
+          setTimeout(() => { btn.textContent = origText; }, 2000);
+        }
+      }
+    } else {
+      if (btn) {
+        btn.textContent = '✓ Preview Saved';
+        setTimeout(() => { btn.textContent = origText; }, 1500);
+      }
+    }
+  } catch (err) {
+    console.error('makePreviewReport failed:', err);
+    alert('Make Preview Report failed: ' + (err && err.message ? err.message : 'unknown'));
+  }
+}
+
+
+/* ---------- Settings Modal ---------- */
+function openSettings() {
+  const token = localStorage.getItem('ceoDailyReportGithubToken') || '';
+  const repo = localStorage.getItem('ceoDailyReportGithubRepo') || '';
+  const inputToken = document.getElementById('settingGithubToken');
+  const inputRepo = document.getElementById('settingGithubRepo');
+  
+  if (inputToken) inputToken.value = token;
+  if (inputRepo) inputRepo.value = repo;
+  
+  const bd = document.getElementById('backdrop');
+  if (bd) bd.classList.add('open');
+  const sm = document.getElementById('settingsModal');
+  if (sm) sm.classList.add('open');
+}
+
+function closeSettings() {
+  const bd = document.getElementById('backdrop');
+  if (bd) bd.classList.remove('open');
+  const sm = document.getElementById('settingsModal');
+  if (sm) sm.classList.remove('open');
+}
+
+function saveSettings() {
+  const inputToken = document.getElementById('settingGithubToken');
+  const inputRepo = document.getElementById('settingGithubRepo');
+  if (inputToken) localStorage.setItem('ceoDailyReportGithubToken', inputToken.value.trim());
+  if (inputRepo) localStorage.setItem('ceoDailyReportGithubRepo', inputRepo.value.trim());
+  
+  closeSettings();
 }
 
 
@@ -4862,11 +5093,15 @@ function wireEvents() {
       'print':             () => window.print(),
       'screenshot':        takeScreenshot,
       'make-report':       makeReport,
+      'make-preview-report': makePreviewReport,
       'save':              saveReport,
       'zoom-out':          () => changeZoom(-ZOOM_STEP),
       'zoom-reset':        resetZoom,
       'zoom-in':           () => changeZoom(ZOOM_STEP),
       'toggle-theme':      toggleTheme,
+      'open-settings':     openSettings,
+      'close-settings':    closeSettings,
+      'save-settings':     saveSettings,
       'add-alert':         addAlert,
       'add-spare':         addSparePart,
       'close-history':     closeHistory,
